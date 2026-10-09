@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kottu Kade | Sri Lanka's Cheesiest & Sizzling Kottu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Sinhala+Detail:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        kottuDark: '#0A0C10',
+                        kottuCard: '#141824',
+                        kottuOrange: '#FF4500',
+                        kottuAmber: '#FFB703',
+                        kottuYellow: '#FFD166',
+                        kottuGreen: '#10B981'
+                    },
+                    fontFamily: {
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon-orange': '0 0 25px rgba(255, 69, 0, 0.4)',
+                        'neon-gold': '0 0 25px rgba(255, 183, 3, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0A0C10;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        
+        .cheese-gradient-text {
+            background: linear-gradient(135deg, #FFD166 0%, #FFB703 50%, #FF4500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .fire-bg-gradient {
+            background: radial-gradient(circle at top right, rgba(255, 69, 0, 0.18), transparent 60%),
+                        radial-gradient(circle at bottom left, rgba(255, 183, 3, 0.12), transparent 50%);
+        }
+
+        .glass-card {
+            background: rgba(20, 24, 36, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0A0C10;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #FF4500;
+            border-radius: 10px;
+        }
+
+        @keyframes steam {
+            0% { transform: translateY(0) scaleX(1); opacity: 0; }
+            50% { opacity: 0.6; }
+            100% { transform: translateY(-40px) scaleX(1.3); opacity: 0; }
+        }
+        .steam-line {
+            animation: steam 2.5s infinite linear;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+        .pulse-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="custom-scrollbar relative min-h-screen">
+
+    <!-- Sticky Navbar -->
+    <nav class="sticky top-0 z-40 bg-kottuDark/90 backdrop-blur-md border-b border-gray-800/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-kottuOrange to-kottuAmber flex items-center justify-center text-kottuDark font-black text-2xl shadow-neon-orange transform group-hover:rotate-6 transition-transform">
+                    <i class="fa-solid font-bold fa-utensils"></i>
+                </div>
+                <div>
+                    <span class="text-2xl font-black tracking-wider text-white uppercase block leading-none">
+                        KOTTU <span class="cheese-gradient-text">KADE</span>
+                    </span>
+                    <span class="text-[10px] tracking-widest text-gray-400 uppercase font-semibold">
+                        🔥 Cheesiest In Town
+                    </span>
+                </div>
+            </a>
+
+            <!-- Nav Links -->
+            <div class="hidden md:flex items-center gap-8 font-semibold text-sm">
+                <a href="#hero" class="text-gray-300 hover:text-kottuAmber transition-colors">Home</a>
+                <a href="#menu" class="text-gray-300 hover:text-kottuAmber transition-colors">Special Menu</a>
+                <a href="#customizer" class="text-gray-300 hover:text-kottuAmber transition-colors">Build Kottu 🛠️</a>
+                <a href="#beats" class="text-gray-300 hover:text-kottuAmber transition-colors">Kottu Beats 🥁</a>
+                <a href="#contact" class="text-gray-300 hover:text-kottuAmber transition-colors">Find Us</a>
+            </div>
+
+            <!-- Action Buttons & Cart -->
+            <div class="flex items-center gap-4">
+                <!-- Sound Beats Quick Toggle -->
+                <button id="quickSoundBtn" onclick="toggleKottuSound()" class="hidden sm:flex items-center gap-2 bg-gray-800/80 hover:bg-gray-700 text-kottuAmber px-3 py-2 rounded-xl border border-kottuAmber/30 text-xs font-bold transition-all">
+                    <i class="fa-solid fa-drumstick-bite animate-bounce"></i>
+                    <span id="soundBtnText">Kottu Rhythm</span>
+                </button>
+
+                <!-- Cart Button -->
+                <button onclick="toggleCartDrawer()" class="relative p-3 bg-gray-800 hover:bg-gray-700 text-white rounded-xl border border-gray-700 transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                    <span id="cartBadge" class="absolute -top-2 -right-2 bg-kottuOrange text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-kottuDark shadow-lg scale-0 transition-transform">0</span>
+                </button>
+
+                <!-- Order Now CTA -->
+                <a href="#menu" class="hidden sm:inline-flex bg-gradient-to-r from-kottuOrange to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold px-5 py-2.5 rounded-xl shadow-neon-orange transition-all transform hover:-translate-y-0.5 text-sm">
+                    Order Now 🚀
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-8 pb-20 md:py-24 fire-bg-gradient overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Left Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-950/60 border border-kottuOrange/40 text-kottuAmber text-xs font-bold uppercase tracking-wider">
+                        <span class="w-2.5 h-2.5 rounded-full bg-kottuGreen animate-ping"></span>
+                        🟢 HOT & FREELY DELIVERING NOW • 4 PM - 2 AM
+                    </div>
+
+                    <h1 class="text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-none">
+                        ලංකාවේ අංක 1 <br/>
+                        <span class="cheese-gradient-text">CHEESIEST KOTTU</span> <br/>
+                        EXPERIENCE! 🔥
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        තාච්චියෙන් කෙලින්ම ඔබේ තැටියට! 🧀 fresh මොසරෙල්ලා චීස්, සුවඳ හමන රහස් තුනපහ කළුපොල් කරිය සහ sizzling තැටියේ පදමට කැපුනු රසම රස කොත්තු!
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#menu" class="w-full sm:w-auto bg-gradient-to-r from-kottuOrange to-kottuAmber hover:brightness-110 text-kottuDark font-black text-lg px-8 py-4 rounded-2xl shadow-neon-orange flex items-center justify-center gap-3 transition-all transform hover:scale-105">
+                            <i class="fa-solid fa-fire text-xl"></i>
+                            EXPLORE MENU
+                        </a>
+                        <a href="#customizer" class="w-full sm:w-auto bg-gray-800/90 hover:bg-gray-700 border border-gray-700 text-white font-bold text-lg px-8 py-4 rounded-2xl flex items-center justify-center gap-3 transition-all">
+                            <i class="fa-solid fa-sliders text-kottuAmber"></i>
+                            CUSTOM KOTTU BUILDER
+                        </a>
+                    </div>
+
+                    <!-- Trust Highlights -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-gray-800/80">
+                        <div>
+                            <p class="text-2xl font-black text-white">100%</p>
+                            <p class="text-xs text-gray-400">Fresh Ingredients</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-kottuAmber">Extra Cheese</p>
+                            <p class="text-xs text-gray-400">Pure Mozzarella</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-black text-kottuOrange">30 Mins</p>
+                            <p class="text-xs text-gray-400">Hot Fast Delivery</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hero Right Interactive Display -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-gradient-to-tr from-kottuOrange/20 to-kottuAmber/30 p-4 border border-kottuOrange/30 pulse-glow flex items-center justify-center">
+                        
+                        <!-- Steam Animation Elements -->
+                        <div class="absolute -top-10 flex gap-4 text-gray-400/40 text-2xl">
+                            <i class="fa-solid fa-wind steam-line"></i>
+                            <i class="fa-solid fa-smog steam-line" style="animation-delay: 0.8s"></i>
+                            <i class="fa-solid fa-wind steam-line" style="animation-delay: 1.5s"></i>
+                        </div>
+
+                        <!-- Kottu Hero Showcase Image Card -->
+                        <div class="w-full h-full rounded-full overflow-hidden border-4 border-kottuAmber/50 shadow-neon-gold relative group">
+                            <img src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80" alt="Delicious Sri Lankan Cheese Kottu" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700">
+                            
+                            <!-- Floating Tag -->
+                            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-kottuDark/90 backdrop-blur-md px-6 py-2.5 rounded-full border border-kottuOrange/50 shadow-2xl flex items-center gap-3 whitespace-nowrap">
+                                <span class="text-xl">🧀</span>
+                                <div class="text-left">
+                                    <p class="text-xs text-gray-400 font-medium">Bestseller</p>
+                                    <p class="text-xs font-bold text-kottuAmber">Ultimate Melted Cheese Kottu</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Kottu Chop Beat Box (Web Audio API Synthesizer) -->
+    <section id="beats" class="py-12 bg-kottuCard/80 border-y border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            
+            <div class="max-w-2xl mx-auto space-y-3">
+                <span class="text-xs font-extrabold text-kottuOrange tracking-widest uppercase bg-orange-950/80 px-3 py-1 rounded-full border border-kottuOrange/30">
+                    🔊 Authentic Street Experience
+                </span>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">
+                    FEEL THE <span class="cheese-gradient-text">KOTTU CHOP RHYTHM!</span> 🥁
+                </h2>
+                <p class="text-sm text-gray-400">
+                    ඔබගේ කනට කොත්තු තැටියේ සැබෑ ශබ්දය! Click below to trigger the metallic Kottu blade beat synthesized in real-time.
+                </p>
+
+                <!-- Sound Controls -->
+                <div class="pt-4 flex flex-wrap justify-center gap-3">
+                    <button onclick="playKottuBeat('beat1')" class="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-bold px-5 py-3 rounded-xl text-sm shadow-md flex items-center gap-2 transform active:scale-95 transition-all">
+                        <i class="fa-solid fa-play"></i> Classic Beat (තක තක)
+                    </button>
+                    <button onclick="playKottuBeat('beat2')" class="bg-gray-800 hover:bg-gray-700 text-kottuAmber border border-kottuAmber/40 font-bold px-5 py-3 rounded-xl text-sm flex items-center gap-2 transform active:scale-95 transition-all">
+                        <i class="fa-solid fa-drum"></i> Fast Rush Beat
+                    </button>
+                    <button onclick="stopKottuBeat()" class="bg-red-950/80 hover:bg-red-900 text-red-400 border border-red-800/50 font-bold px-4 py-3 rounded-xl text-sm flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-stop"></i> Mute
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Custom Kottu Builder Section -->
+    <section id="customizer" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+                <h2 class="text-3xl sm:text-4xl font-black uppercase tracking-tight">
+                    BUILD YOUR OWN <span class="cheese-gradient-text">KOTTU</span> 🛠️
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base">
+                    ඔබට අවශ්‍ය විදියට Base එක, Spicy Level එක, Cheese ප්‍රමාණය තෝරලා ඔයාගෙන්ම Special Kottu එකක් නිර්මාණය කරගන්න!
+                </p>
+            </div>
+
+            <!-- Customizer Box Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Options Panel -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Step 1: Base Type -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800">
+                        <label class="block text-sm font-bold text-kottuAmber uppercase tracking-wider">
+                            1. Select Roti Base
+                        </label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button type="button" onclick="selectBase('Paratha', 0, this)" class="custom-base-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-3 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-sm">Classic Paratha</span>
+                                <span class="text-xs text-gray-400 font-normal">Standard Roti</span>
+                            </button>
+                            <button type="button" onclick="selectBase('Dolphin (Paan)', 50, this)" class="custom-base-btn bg-gray-800/60 border border-gray-700 text-gray-300 hover:border-gray-500 p-3 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-sm">Dolphin Paan</span>
+                                <span class="text-xs text-gray-400 font-normal">+Rs. 50</span>
+                            </button>
+                            <button type="button" onclick="selectBase('String Hopper', 80, this)" class="custom-base-btn bg-gray-800/60 border border-gray-700 text-gray-300 hover:border-gray-500 p-3 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-sm">String Hopper</span>
+                                <span class="text-xs text-gray-400 font-normal">+Rs. 80</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Flavor / Main Portion -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800">
+                        <label class="block text-sm font-bold text-kottuAmber uppercase tracking-wider">
+                            2. Select Type & Main Flavor
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <button type="button" onclick="selectFlavor('Vegetable Kottu', 850, this)" class="custom-flavor-btn bg-gray-800/60 border border-gray-700 text-gray-300 hover:border-gray-500 p-4 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-base">🥦 Vegetable</span>
+                                <span class="text-xs text-kottuGreen font-semibold">Rs. 850</span>
+                            </button>
+                            <button type="button" onclick="selectFlavor('Cheese Kottu', 1250, this)" class="custom-flavor-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-4 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-base">🧀 Cheese Only</span>
+                                <span class="text-xs text-kottuAmber font-semibold">Rs. 1,250</span>
+                            </button>
+                            <button type="button" onclick="selectFlavor('Special Chicken Cheese', 1550, this)" class="custom-flavor-btn bg-gray-800/60 border border-gray-700 text-gray-300 hover:border-gray-500 p-4 rounded-xl text-left font-bold transition-all">
+                                <span class="block text-base">🍗 Chicken + Cheese</span>
+                                <span class="text-xs text-kottuOrange font-semibold">Rs. 1,550</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Spice Level -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800">
+                        <label class="block text-sm font-bold text-kottuAmber uppercase tracking-wider">
+                            3. Spice Level
+                        </label>
+                        <div class="grid grid-cols-3 gap-3 text-center">
+                            <button type="button" onclick="selectSpice('Mild Spice 🌶️', this)" class="custom-spice-btn bg-gray-800/60 border border-gray-700 text-gray-300 p-3 rounded-xl font-bold transition-all text-sm">
+                                Mild 🌶️
+                            </button>
+                            <button type="button" onclick="selectSpice('Hot & Spicy 🌶️🌶️', this)" class="custom-spice-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-3 rounded-xl font-bold transition-all text-sm">
+                                Hot 🌶️🌶️
+                            </button>
+                            <button type="button" onclick="selectSpice('Extra Spicy Hell 🔥', this)" class="custom-spice-btn bg-gray-800/60 border border-gray-700 text-gray-300 p-3 rounded-xl font-bold transition-all text-sm">
+                                Fire 🔥
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Add-ons -->
+                    <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800">
+                        <label class="block text-sm font-bold text-kottuAmber uppercase tracking-wider">
+                            4. Extra Toppings & Cheese Splash
+                        </label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="flex items-center gap-3 bg-gray-800/50 p-3 rounded-xl cursor-pointer hover:bg-gray-800 transition-colors">
+                                <input type="checkbox" onchange="toggleAddon('Double Mozzarella Cheese', 300, this)" class="w-5 h-5 accent-kottuOrange rounded">
+                                <span class="text-sm font-semibold">🧀 Double Mozzarella (+Rs.300)</span>
+                            </label>
+                            <label class="flex items-center gap-3 bg-gray-800/50 p-3 rounded-xl cursor-pointer hover:bg-gray-800 transition-colors">
+                                <input type="checkbox" onchange="toggleAddon('Extra Kalu Pol Gravy', 100, this)" class="w-5 h-5 accent-kottuOrange rounded">
+                                <span class="text-sm font-semibold">🍲 Extra Hot Gravy (+Rs.100)</span>
+                            </label>
+                            <label class="flex items-center gap-3 bg-gray-800/50 p-3 rounded-xl cursor-pointer hover:bg-gray-800 transition-colors">
+                                <input type="checkbox" onchange="toggleAddon('Fried Bullseye Egg', 120, this)" class="w-5 h-5 accent-kottuOrange rounded">
+                                <span class="text-sm font-semibold">🍳 Fried Egg (+Rs.120)</span>
+                            </label>
+                            <label class="flex items-center gap-3 bg-gray-800/50 p-3 rounded-xl cursor-pointer hover:bg-gray-800 transition-colors">
+                                <input type="checkbox" onchange="toggleAddon('Roast Chili Paste Tub', 80, this)" class="w-5 h-5 accent-kottuOrange rounded">
+                                <span class="text-sm font-semibold">🌶️ Roast Chili Paste (+Rs.80)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Customizer Live Summary Card -->
+                <div class="lg:col-span-5 sticky top-28">
+                    <div class="glass-card p-6 sm:p-8 rounded-3xl border-2 border-kottuOrange/40 shadow-neon-orange space-y-6">
+                        <div class="flex justify-between items-center border-b border-gray-800 pb-4">
+                            <h3 class="text-xl font-black text-white flex items-center gap-2">
+                                <i class="fa-solid fa-receipt text-kottuOrange"></i> YOUR CUSTOM KOTTU
+                            </h3>
+                            <span class="text-xs bg-kottuOrange/20 text-kottuOrange font-bold px-3 py-1 rounded-full border border-kottuOrange/30">
+                                Freshly Chopped
+                            </span>
+                        </div>
+
+                        <!-- Config Live Breakdown -->
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between text-gray-300">
+                                <span>Base:</span>
+                                <span id="summaryBase" class="font-bold text-white">Paratha</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span>Flavor Type:</span>
+                                <span id="summaryFlavor" class="font-bold text-white">Cheese Only</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span>Spice Level:</span>
+                                <span id="summarySpice" class="font-bold text-kottuOrange">Hot & Spicy 🌶️🌶️</span>
+                            </div>
+                            <div class="border-t border-gray-800/60 pt-3">
+                                <span class="text-xs text-gray-400 block mb-1">Selected Add-ons:</span>
+                                <ul id="summaryAddons" class="text-xs text-kottuAmber space-y-1">
+                                    <li>• No add-ons selected</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Price Counter -->
+                        <div class="border-t border-gray-800 pt-4 flex justify-between items-center">
+                            <div>
+                                <span class="text-xs text-gray-400 block">Estimated Price</span>
+                                <span id="summaryTotalPrice" class="text-3xl font-black text-kottuAmber">Rs. 1,250</span>
+                            </div>
+                            <button onclick="addCustomToCart()" class="bg-gradient-to-r from-kottuOrange to-amber-500 hover:brightness-110 text-kottuDark font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all transform hover:scale-105 active:scale-95 flex items-center gap-2 text-sm">
+                                <i class="fa-solid fa-plus"></i> ADD TO CART
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Signature Menu Section -->
+    <section id="menu" class="py-20 bg-kottuCard/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-12 space-y-3">
+                <span class="text-xs font-extrabold text-kottuAmber uppercase tracking-widest bg-amber-950/60 px-3 py-1 rounded-full border border-kottuAmber/30">
+                    🔥 Our Specialties
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-black uppercase tracking-tight">
+                    EXPLORE THE <span class="cheese-gradient-text">MENU</span>
+                </h2>
+                <p class="text-gray-400 text-sm sm:text-base">
+                    අපගේ ජනප්‍රියම Cheese Kottu, Vegetable Kottu සහ Special Combos පහසුවෙන්ම Order කරන්න.
+                </p>
+            </div>
+
+            <!-- Category Filter Tabs -->
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="filterMenu('all', this)" class="menu-tab-btn active-tab bg-gradient-to-r from-kottuOrange to-amber-500 text-kottuDark font-bold px-6 py-2.5 rounded-xl text-sm transition-all shadow-md">
+                    All Kottu
+                </button>
+                <button onclick="filterMenu('cheese', this)" class="menu-tab-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm transition-all border border-gray-700">
+                    🧀 Cheese Kottu
+                </button>
+                <button onclick="filterMenu('veggie', this)" class="menu-tab-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm transition-all border border-gray-700">
+                    🥦 Vegetable Kottu
+                </button>
+                <button onclick="filterMenu('combos', this)" class="menu-tab-btn bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-6 py-2.5 rounded-xl text-sm transition-all border border-gray-700">
+                    🥤 Combos & Drinks
+                </button>
+            </div>
+
+            <!-- Menu Cards Grid -->
+            <div id="menuContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Javascript will inject item cards dynamically -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Reviews & Highlights -->
+    <section class="py-20 bg-kottuDark relative border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+                <h2 class="text-3xl font-black uppercase text-white">
+                    WHAT KOTTU LOVERS <span class="cheese-gradient-text">SAY</span> ❤️
+                </h2>
+                <p class="text-gray-400 text-sm">
+                    ලංකාවේ වටෙන්ම අපේ කොත්තු කඩේට එන කොත්තු පිස්සන්ගේ අදහස්!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Review 1 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800 hover:border-kottuOrange/50 transition-all">
+                    <div class="flex items-center gap-1 text-kottuAmber">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">
+                        "අම්මෝ චීස් කොත්තුව නම් සුපිරියක්ම තමයි! Cheese ගොඩයි. Gravy එකේ රසත් මරු. Delivery එකත් විනාඩි 25න් ආවා!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-kottuOrange to-kottuAmber font-bold text-kottuDark flex items-center justify-center text-sm">
+                            SK
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Sahan Kalhara</p>
+                            <p class="text-xs text-gray-500">Verified Customer • Colombo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 2 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800 hover:border-kottuOrange/50 transition-all">
+                    <div class="flex items-center gap-1 text-kottuAmber">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">
+                        "Veggie Kottu එක මම ගොඩක් තැන් වලින් කාලා තියෙනවා, ඒත් මේ අයගේ Secret Gravy එකත් එක්ක එන Veggie එක තමයි මට සෙට්ම!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-400 font-bold text-kottuDark flex items-center justify-center text-sm">
+                            DM
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Dilini Perera</p>
+                            <p class="text-xs text-gray-500">Verified Customer • Nugegoda</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Review 3 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border border-gray-800 hover:border-kottuOrange/50 transition-all">
+                    <div class="flex items-center gap-1 text-kottuAmber">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 italic">
+                        "Website එකෙන්ම Custom Builder එකෙන් Cheese overload දාලා order කරා. WhatsApp එකට කෙලින්ම confirmation එක ආවා. A+ Service!"
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-purple-500 to-pink-500 font-bold text-white flex items-center justify-center text-sm">
+                            RN
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Ravindu Niroshan</p>
+                            <p class="text-xs text-gray-500">Verified Customer • Rajagiriya</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slide-out Cart Drawer -->
+    <div id="cartDrawerOverlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <div id="cartDrawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-kottuCard z-50 translate-x-full transition-transform duration-300 flex flex-col shadow-2xl border-l border-gray-800">
+        
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-kottuDark">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-bag-shopping text-xl text-kottuOrange"></i>
+                <h3 class="text-xl font-black text-white uppercase">Your Food Cart</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="p-2 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items Scroll Area -->
+        <div id="cartItemsList" class="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+            <!-- Empty Cart Placeholder -->
+            <div id="emptyCartMsg" class="text-center py-16 space-y-3">
+                <i class="fa-solid fa-bowl-food text-5xl text-gray-700 animate-pulse"></i>
+                <p class="text-gray-400 font-medium text-sm">Your cart is currently empty!</p>
+                <a href="#menu" onclick="toggleCartDrawer()" class="inline-block bg-kottuOrange/20 text-kottuOrange text-xs font-bold px-4 py-2 rounded-xl border border-kottuOrange/30 hover:bg-kottuOrange hover:text-white transition-all">
+                    Browse Menu Now
+                </a>
+            </div>
+        </div>
+
+        <!-- Cart Footer / Total Summary -->
+        <div class="p-6 border-t border-gray-800 bg-kottuDark space-y-4">
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between text-gray-400">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal" class="text-white font-bold">Rs. 0</span>
+                </div>
+                <div class="flex justify-between text-gray-400">
+                    <span>Delivery Fee</span>
+                    <span id="cartDeliveryFee" class="text-kottuGreen font-bold">Rs. 250</span>
+                </div>
+                <div class="flex justify-between text-lg font-black text-white border-t border-gray-800 pt-2">
+                    <span>Total Price</span>
+                    <span id="cartTotal" class="text-kottuAmber">Rs. 250</span>
+                </div>
+            </div>
+
+            <button onclick="openCheckoutModal()" class="w-full bg-gradient-to-r from-kottuOrange to-amber-500 hover:brightness-110 text-kottuDark font-black py-4 rounded-2xl shadow-neon-orange flex items-center justify-center gap-2 transition-all">
+                <i class="fa-brands fa-whatsapp text-xl"></i> CHECKOUT VIA WHATSAPP
+            </button>
+        </div>
+
+    </div>
+
+    <!-- WhatsApp Checkout Modal -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-lg p-6 sm:p-8 rounded-3xl border border-kottuOrange/40 space-y-6 relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            
+            <button onclick="closeCheckoutModal()" class="absolute top-6 right-6 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="space-y-1">
+                <span class="text-xs font-bold text-kottuOrange uppercase tracking-wider">Fast Direct Order</span>
+                <h3 class="text-2xl font-black text-white uppercase">Complete Order Details</h3>
+                <p class="text-xs text-gray-400">ඔබේ විස්තර ඇතුලත් කර WhatsApp හරහා සෘජුවම Order එක Confirm කරන්න.</p>
+            </div>
+
+            <form id="checkoutForm" onsubmit="dispatchWhatsAppOrder(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Your Name (නම) *</label>
+                    <input type="text" id="custName" required placeholder="e.g. Kasun Kalhara" class="w-full bg-gray-900 border border-gray-700 focus:border-kottuOrange text-white rounded-xl p-3 text-sm outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Phone Number (දුරකථන අංකය) *</label>
+                    <input type="tel" id="custPhone" required placeholder="e.g. 0771234567" class="w-full bg-gray-900 border border-gray-700 focus:border-kottuOrange text-white rounded-xl p-3 text-sm outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Delivery Address (ලිපිනය) *</label>
+                    <textarea id="custAddress" required rows="2" placeholder="e.g. No 45, Main Street, Nugegoda" class="w-full bg-gray-900 border border-gray-700 focus:border-kottuOrange text-white rounded-xl p-3 text-sm outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-300 uppercase mb-1">Payment Option</label>
+                    <select id="custPayment" class="w-full bg-gray-900 border border-gray-700 focus:border-kottuOrange text-white rounded-xl p-3 text-sm outline-none">
+                        <option value="Cash on Delivery">Cash on Delivery (ලැබුණු පසු මුදල් ගෙවීම)</option>
+                        <option value="Card Machine on Delivery">Card on Delivery (POS Machine)</option>
+                    </select>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-kottuGreen hover:bg-emerald-600 text-white font-black py-4 rounded-2xl shadow-lg flex items-center justify-center gap-3 transition-all text-base">
+                        <i class="fa-brands fa-whatsapp text-2xl"></i> CONFIRM & SEND TO WHATSAPP
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact & Map Section -->
+    <section id="contact" class="py-20 bg-kottuDark border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                
+                <div class="space-y-6">
+                    <span class="text-xs font-bold text-kottuAmber uppercase tracking-wider bg-amber-950/60 px-3 py-1 rounded-full border border-kottuAmber/30">
+                        📍 Visit Us
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-black text-white uppercase">
+                        KOTTU KADE <span class="cheese-gradient-text">HEADQUARTERS</span>
+                    </h2>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        අපගේ ප්‍රධාන කොත්තු පීඨය වෙත ඇවිත් Sizzling තැටියෙන්ම උණුවෙන්ම කොත්තු රහ විඳින්න! 
+                    </p>
+
+                    <div class="space-y-4 text-sm text-gray-300">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-kottuOrange text-lg">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Location Address</p>
+                                <p class="font-bold text-white">No. 128, High Level Road, Nugegoda, Sri Lanka</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-kottuAmber text-lg">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Hotline Order Numbers</p>
+                                <p class="font-bold text-white">077 123 4567 / 011 234 5678</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-gray-800 border border-gray-700 flex items-center justify-center text-kottuGreen text-lg">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Opening Hours</p>
+                                <p class="font-bold text-white">Everyday: 4:00 PM - 2:00 AM (Midnight Late)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Map Frame / Outlet Card -->
+                <div class="glass-card p-4 rounded-3xl border border-gray-800 overflow-hidden shadow-2xl h-80 relative flex items-center justify-center">
+                    <iframe title="Kottu Kade Location Map" class="w-full h-full rounded-2xl filter grayscale contrast-125 opacity-80 hover:opacity-100 transition-opacity" src="https://maps.google.com/maps?q=Nugegoda%20Sri%20Lanka&t=&z=14&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black py-10 border-t border-gray-900 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 space-y-4">
+            <p class="font-bold text-sm text-gray-400 uppercase tracking-widest">
+                KOTTU KADE © 2026 • ALL RIGHTS RESERVED
+            </p>
+            <p>Made with 🔥 & Cheese for Kottu Lovers in Sri Lanka</p>
+            <div class="flex justify-center gap-6 text-gray-400 text-lg pt-2">
+                <a href="#" class="hover:text-kottuOrange"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#" class="hover:text-kottuOrange"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-kottuOrange"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="#" class="hover:text-kottuGreen"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 space-y-2 pointer-events-none"></div>
+
+    <!-- Application Logic & Interactive Features -->
+    <script>
+        // --- 1. Menu Data ---
+        const menuItems = [
+            {
+                id: 'm1',
+                title: 'Special Melted Cheese Kottu',
+                category: 'cheese',
+                price: 1350,
+                rating: '4.9',
+                badge: '🧀 Hot Bestseller',
+                desc: 'Fresh Mozzarella overloaded with veggies & signature spicy Kalu Pol curry gravy.',
+                image: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'm2',
+                title: 'Crispy Veggie Delight Kottu',
+                category: 'veggie',
+                price: 850,
+                rating: '4.8',
+                badge: '🥦 Healthy & Spicy',
+                desc: 'Packed with crunchy carrots, leeks, cabbage, bell peppers & special spicy gravy.',
+                image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'm3',
+                title: 'Cheese Overload Chicken Kottu',
+                category: 'cheese',
+                price: 1650,
+                rating: '5.0',
+                badge: '🍗 Chef Special',
+                desc: 'Juicy roast chicken pieces mixed with double Mozzarella cheese splash.',
+                image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'm4',
+                title: 'Dolphin Cheese Kottu',
+                category: 'cheese',
+                price: 1450,
+                rating: '4.9',
+                badge: '🍞 Cube Bread Kottu',
+                desc: 'Soft roast paan cubes tossed in rich creamy spicy cheese sauce.',
+                image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'm5',
+                title: 'Egg & Veggie Spice Kottu',
+                category: 'veggie',
+                price: 950,
+                rating: '4.7',
+                badge: '🥚 Classic Favorite',
+                desc: 'Freshly scrambled eggs tossed with aromatic veggies & chili paste.',
+                image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80'
+            },
+            {
+                id: 'm6',
+                title: 'Kottu Combo + Chilled Beverage',
+                category: 'combos',
+                price: 1750,
+                rating: '4.9',
+                badge: '🥤 Value Combo',
+                desc: 'Any Cheese Kottu + Fried Egg + Cold Beverage (500ml Coca-Cola/Sprite).',
+                image: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80'
+            }
+        ];
+
+        // --- 2. Shopping Cart State ---
+        let cart = [];
+        const deliveryFee = 250;
+
+        // --- 3. Custom Kottu Builder State ---
+        let customKottu = {
+            base: 'Paratha',
+            basePrice: 0,
+            flavor: 'Cheese Only',
+            flavorPrice: 1250,
+            spice: 'Hot & Spicy 🌶️🌶️',
+            addons: []
+        };
+
+        // --- Render Menu Items ---
+        function renderMenu(category = 'all') {
+            const container = document.getElementById('menuContainer');
+            container.innerHTML = '';
+
+            const filtered = category === 'all' ? menuItems : menuItems.filter(item => item.category === category);
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-3xl overflow-hidden border border-gray-800 hover:border-kottuOrange/50 transition-all duration-300 flex flex-col group";
+                card.innerHTML = `
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <span class="absolute top-3 left-3 bg-kottuDark/90 backdrop-blur-md text-kottuAmber text-xs font-bold px-3 py-1 rounded-full border border-kottuAmber/30">
+                            ${item.badge}
+                        </span>
+                        <span class="absolute bottom-3 right-3 bg-kottuDark/90 text-white text-xs font-bold px-2.5 py-1 rounded-lg border border-gray-700 flex items-center gap-1">
+                            ⭐ ${item.rating}
+                        </span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white group-hover:text-kottuOrange transition-colors">${item.title}</h3>
+                            <p class="text-xs text-gray-400 mt-2 leading-relaxed">${item.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between border-t border-gray-800/80 pt-4">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Price</span>
+                                <span class="text-xl font-black text-kottuAmber">Rs. ${item.price.toLocaleString()}</span>
+                            </div>
+                            <button onclick="addToCart('${item.id}')" class="bg-gray-800 hover:bg-kottuOrange text-white font-bold px-4 py-2.5 rounded-xl border border-gray-700 hover:border-kottuOrange transition-all flex items-center gap-2 text-xs">
+                                <i class="fa-solid fa-cart-plus text-sm"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Filter Menu Tabs ---
+        function filterMenu(cat, btn) {
+            document.querySelectorAll('.menu-tab-btn').forEach(b => {
+                b.classList.remove('bg-gradient-to-r', 'from-kottuOrange', 'to-amber-500', 'text-kottuDark');
+                b.classList.add('bg-gray-800', 'text-gray-300');
+            });
+            btn.classList.remove('bg-gray-800', 'text-gray-300');
+            btn.classList.add('bg-gradient-to-r', 'from-kottuOrange', 'to-amber-500', 'text-kottuDark');
+            renderMenu(cat);
+        }
+
+        // --- Customizer Logic ---
+        function selectBase(name, price, btn) {
+            customKottu.base = name;
+            customKottu.basePrice = price;
+            document.querySelectorAll('.custom-base-btn').forEach(b => {
+                b.className = 'custom-base-btn bg-gray-800/60 border border-gray-700 text-gray-300 p-3 rounded-xl text-left font-bold transition-all';
+            });
+            btn.className = 'custom-base-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-3 rounded-xl text-left font-bold transition-all';
+            updateCustomizerUI();
+        }
+
+        function selectFlavor(name, price, btn) {
+            customKottu.flavor = name;
+            customKottu.flavorPrice = price;
+            document.querySelectorAll('.custom-flavor-btn').forEach(b => {
+                b.className = 'custom-flavor-btn bg-gray-800/60 border border-gray-700 text-gray-300 p-4 rounded-xl text-left font-bold transition-all';
+            });
+            btn.className = 'custom-flavor-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-4 rounded-xl text-left font-bold transition-all';
+            updateCustomizerUI();
+        }
+
+        function selectSpice(spiceName, btn) {
+            customKottu.spice = spiceName;
+            document.querySelectorAll('.custom-spice-btn').forEach(b => {
+                b.className = 'custom-spice-btn bg-gray-800/60 border border-gray-700 text-gray-300 p-3 rounded-xl font-bold transition-all text-sm';
+            });
+            btn.className = 'custom-spice-btn active-option bg-kottuOrange/20 border-2 border-kottuOrange text-white p-3 rounded-xl font-bold transition-all text-sm';
+            updateCustomizerUI();
+        }
+
+        function toggleAddon(name, price, checkbox) {
+            if (checkbox.checked) {
+                customKottu.addons.push({ name, price });
+            } else {
+                customKottu.addons = customKottu.addons.filter(a => a.name !== name);
+            }
+            updateCustomizerUI();
+        }
+
+        function updateCustomizerUI() {
+            document.getElementById('summaryBase').innerText = customKottu.base;
+            document.getElementById('summaryFlavor').innerText = customKottu.flavor;
+            document.getElementById('summarySpice').innerText = customKottu.spice;
+
+            const addonList = document.getElementById('summaryAddons');
+            if (customKottu.addons.length === 0) {
+                addonList.innerHTML = '<li>• No add-ons selected</li>';
+            } else {
+                addonList.innerHTML = customKottu.addons.map(a => `<li>• ${a.name} (+Rs.${a.price})</li>`).join('');
+            }
+
+            const addonsTotal = customKottu.addons.reduce((sum, a) => sum + a.price, 0);
+            const total = customKottu.basePrice + customKottu.flavorPrice + addonsTotal;
+            document.getElementById('summaryTotalPrice').innerText = `Rs. ${total.toLocaleString()}`;
+        }
+
+        function addCustomToCart() {
+            const addonsTotal = customKottu.addons.reduce((sum, a) => sum + a.price, 0);
+            const price = customKottu.basePrice + customKottu.flavorPrice + addonsTotal;
+            
+            const customItem = {
+                id: 'custom-' + Date.now(),
+                title: `Custom ${customKottu.flavor}`,
+                desc: `Base: ${customKottu.base} | Spice: ${customKottu.spice}` + (customKottu.addons.length ? ` | Addons: ${customKottu.addons.map(a => a.name).join(', ')}` : ''),
+                price: price,
+                qty: 1
+            };
+
+            cart.push(customItem);
+            updateCartUI();
+            showToast('🧀 Custom Kottu added to cart!');
+            toggleCartDrawer(true);
+        }
+
+        // --- Shopping Cart Functions ---
+        function addToCart(itemId) {
+            const item = menuItems.find(m => m.id === itemId);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === itemId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({
+                    id: item.id,
+                    title: item.title,
+                    desc: 'Standard Serving',
+                    price: item.price,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`🔥 ${item.title} Added to Cart!`);
+        }
+
+        function updateCartQty(id, delta) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartList = document.getElementById('cartItemsList');
+            const cartBadge = document.getElementById('cartBadge');
+            const emptyMsg = document.getElementById('emptyCartMsg');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartBadge.innerText = totalItems;
+            if (totalItems > 0) {
+                cartBadge.classList.remove('scale-0');
+            } else {
+                cartBadge.classList.add('scale-0');
+            }
+
+            if (cart.length === 0) {
+                cartList.innerHTML = '';
+                cartList.appendChild(emptyMsg);
+                document.getElementById('cartSubtotal').innerText = 'Rs. 0';
+                document.getElementById('cartTotal').innerText = 'Rs. 250';
+                return;
+            }
+
+            let subtotal = 0;
+            let html = '';
+
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+
+                html += `
+                    <div class="glass-card p-4 rounded-2xl border border-gray-800 flex justify-between items-center gap-3">
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-white">${item.title}</h4>
+                            <p class="text-[11px] text-gray-400 line-clamp-1">${item.desc}</p>
+                            <span class="text-xs text-kottuAmber font-bold mt-1 block">Rs. ${item.price.toLocaleString()}</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-gray-900 border border-gray-700 px-2 py-1 rounded-xl">
+                            <button onclick="updateCartQty('${item.id}', -1)" class="text-xs font-bold text-gray-400 hover:text-white px-1">-</button>
+                            <span class="text-xs font-bold text-white px-1">${item.qty}</span>
+                            <button onclick="updateCartQty('${item.id}', 1)" class="text-xs font-bold text-gray-400 hover:text-white px-1">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            cartList.innerHTML = html;
+            document.getElementById('cartSubtotal').innerText = `Rs. ${subtotal.toLocaleString()}`;
+            document.getElementById('cartTotal').innerText = `Rs. ${(subtotal + deliveryFee).toLocaleString()}`;
+        }
+
+        function toggleCartDrawer(forceOpen = false) {
+            const drawer = document.getElementById('cartDrawer');
+            const overlay = document.getElementById('cartDrawerOverlay');
+
+            if (forceOpen || drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full');
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
+        // --- Checkout Modal ---
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast('❌ Your cart is empty!');
+                return;
+            }
+            toggleCartDrawer();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        // --- WhatsApp Checkout Integration ---
+        function dispatchWhatsAppOrder(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+            const payment = document.getElementById('custPayment').value;
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let grandTotal = subtotal + deliveryFee;
+
+            let message = `🔥 *NEW KOTTU KADE ORDER* 🔥\n\n`;
+            message += `👤 *Customer:* ${name}\n`;
+            message += `📞 *Phone:* ${phone}\n`;
+            message += `📍 *Delivery Address:* ${address}\n`;
+            message += `💳 *Payment Method:* ${payment}\n\n`;
+            message += `🛒 *ORDER ITEMS:*\n`;
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.title} (x${item.qty}) - Rs. ${(item.price * item.qty).toLocaleString()}\n   _${item.desc}_\n`;
+            });
+
+            message += `\n---------------------------\n`;
+            message += `📦 Subtotal: Rs. ${subtotal.toLocaleString()}\n`;
+            message += `🛵 Delivery Fee: Rs. ${deliveryFee}\n`;
+            message += `💰 *TOTAL AMOUNT: Rs. ${grandTotal.toLocaleString()}*\n`;
+            message += `---------------------------\n\n`;
+            message += `Please confirm my order! 🧀`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappNumber = "94771234567"; // Replace with owner's number
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Trigger Confetti Celebration
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+            });
+
+            closeCheckoutModal();
+            cart = [];
+            updateCartUI();
+            
+            showToast('✅ Order Prepared! Opening WhatsApp...');
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 1000);
+        }
+
+        // --- Web Audio API Kottu Rhythm Sound Synthesizer ---
+        let audioCtx = null;
+        let isPlayingBeat = false;
+        let beatTimer = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSteelChopSound() {
+            if (!audioCtx) initAudio();
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            // Metallic metallic clash frequency
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playKottuBeat(type) {
+            initAudio();
+            stopKottuBeat();
+
+            isPlayingBeat = true;
+            document.getElementById('soundBtnText').innerText = "Playing Rhythm... 🥁";
+
+            let step = 0;
+            const speed = type === 'beat1' ? 180 : 120; // ms per beat stroke
+
+            beatTimer = setInterval(() => {
+                if (!isPlayingBeat) return;
+                playSteelChopSound();
+                step++;
+            }, speed);
+
+            showToast('🥁 Kottu Blade Sound Effect Playing!');
+        }
+
+        function stopKottuBeat() {
+            isPlayingBeat = false;
+            if (beatTimer) clearInterval(beatTimer);
+            document.getElementById('soundBtnText').innerText = "Kottu Rhythm";
+        }
+
+        function toggleKottuSound() {
+            if (isPlayingBeat) {
+                stopKottuBeat();
+            } else {
+                playKottuBeat('beat1');
+            }
+        }
+
+        // --- Toast Notifications ---
+        function showToast(msg) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = "bg-kottuDark/95 text-white border border-kottuOrange/60 shadow-neon-orange px-5 py-3 rounded-2xl text-xs font-bold flex items-center gap-3 transition-all transform translate-y-4 opacity-0 pointer-events-auto";
+            toast.innerHTML = `<span>${msg}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- Initialization ---
+        window.onload = function() {
+            renderMenu('all');
+            updateCustomizerUI();
+
+            // GSAP Intro Animations
+            gsap.from("#hero h1", { duration: 1, y: 30, opacity: 0, ease: "power3.out" });
+            gsap.from("#hero p", { duration: 1, y: 30, opacity: 0, delay: 0.2, ease: "power3.out" });
+        }
+    </script>
+</body>
+</html>
